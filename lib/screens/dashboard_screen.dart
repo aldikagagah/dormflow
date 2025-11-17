@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import 'login_screen.dart';
+import 'attendance_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -15,7 +16,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   final List<Widget> _pages = [
     TodayPage(),
-    AttendancePage(),
+    AttendanceScreen(), // <-- ganti ini
     FinancePage(),
     ProfilePage(),
   ];

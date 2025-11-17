@@ -6,19 +6,15 @@ import 'screens/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const DormflowApp());
+
+  runApp(const MyApp());
 }
 
-class DormflowApp extends StatelessWidget {
-  const DormflowApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Dormflow',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
-      home: const SplashScreen(),
-    );
+    return MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen());
   }
 }
