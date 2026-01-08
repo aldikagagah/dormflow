@@ -4,15 +4,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 enum AppThemeMode { light, dark, system }
 
 class ThemeProvider extends ChangeNotifier {
+
+  ThemeProvider() {
+    _loadTheme();
+  }
   static const String _themeKey = 'theme_mode';
 
   AppThemeMode _themeMode = AppThemeMode.system;
 
   AppThemeMode get themeMode => _themeMode;
-
-  ThemeProvider() {
-    _loadTheme();
-  }
 
   Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();

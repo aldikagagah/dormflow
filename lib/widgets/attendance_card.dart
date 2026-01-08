@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
 class AttendanceCard extends StatelessWidget {
-  final String title;
-  final String value;
-  final IconData? icon;
-  final Color color;
-  final String? subtitle;
 
   const AttendanceCard({
     super.key,
@@ -15,6 +10,11 @@ class AttendanceCard extends StatelessWidget {
     this.color = Colors.blue,
     this.subtitle,
   });
+  final String title;
+  final String value;
+  final IconData? icon;
+  final Color color;
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context) {

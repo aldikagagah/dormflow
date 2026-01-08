@@ -42,6 +42,21 @@ dependencies:
   provider: ^6.1.5+1
   shared_preferences: ^2.5.4
 
+  # Clean Architecture Dependencies
+  dartz: ^0.10.1                    # Functional programming (Either, Option)
+  get_it: ^8.0.3                    # Dependency Injection
+  equatable: ^2.0.7                 # Value equality for classes
+  freezed_annotation: ^2.4.4        # Immutable data classes
+  json_annotation: ^4.9.0           # JSON serialization
+  connectivity_plus: ^6.1.4         # Network connectivity check
+
+  # Security Dependencies
+  flutter_secure_storage: ^9.2.4    # Encrypted storage (Keychain/EncryptedSharedPrefs)
+  crypto: ^3.0.6                    # Hashing utilities (SHA-256, HMAC)
+
+  # image_picker: ^1.0.7  # Disabled - Firebase Storage requires Blaze plan
+  # firebase_storage: ^13.0.4  # Disabled - requires Blaze plan
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -52,6 +67,14 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+
+  # Code Generation
+  freezed: ^2.5.7                   # Code generator for freezed_annotation
+  json_serializable: ^6.9.0         # JSON code generator
+  build_runner: ^2.4.15             # Build system for code generation
+
+  # Testing
+  mocktail: ^1.0.4                  # Mocking library for tests
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../theme/app_theme.dart';
+
 import '../services/schedule_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/add_schedule_form.dart';
 
 class ScheduleScreen extends StatefulWidget {
@@ -58,12 +59,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           // App Bar
           SliverAppBar(
             expandedHeight: 120,
-            floating: false,
             pinned: true,
             backgroundColor: AppTheme.primary,
             automaticallyImplyLeading: false,
             flexibleSpace: FlexibleSpaceBar(
-              background: Container(
+              background: DecoratedBox(
                 decoration: const BoxDecoration(
                   gradient: AppTheme.primaryGradient,
                 ),
@@ -305,7 +305,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   }
 
   int _getWeekOfMonth(DateTime date) {
-    final firstDayOfMonth = DateTime(date.year, date.month, 1);
+    final firstDayOfMonth = DateTime(date.year, date.month);
     final firstDayWeekday = firstDayOfMonth.weekday;
     final dayOfMonth = date.day;
     return ((dayOfMonth + firstDayWeekday - 2) / 7).floor() + 1;
@@ -339,7 +339,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ),
               child: Column(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.event_available_rounded,
                     size: 64,
                     color: AppTheme.neutral300,
@@ -378,8 +378,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   }
 
   Widget _buildScheduleCard(Map<String, dynamic> schedule) {
-    final category = schedule['category'] ?? '';
-    final status = schedule['status'] ?? 'Pending';
+    final category = (schedule['category'] as String?) ?? '';
+    final status = (schedule['status'] as String?) ?? 'Pending';
     final isCompleted = status == 'Selesai';
 
     Color categoryColor;
@@ -404,7 +404,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     }
 
     return Dismissible(
-      key: Key(schedule['id']),
+      key: Key((schedule['id'] as String?) ?? ''),
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: Alignment.centerRight,
@@ -415,7 +415,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         ),
         child: const Icon(Icons.delete_rounded, color: Colors.white),
       ),
-      confirmDismiss: (_) => _confirmDelete(schedule['id']),
+      confirmDismiss: (_) => _confirmDelete((schedule['id'] as String?) ?? ''),
       child: Container(
         padding: const EdgeInsets.all(AppTheme.spacingMd),
         decoration: BoxDecoration(
@@ -484,20 +484,20 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    schedule['taskName'] ?? '',
+                    (schedule['taskName'] as String?) ?? '',
                     style: AppTheme.headingSm,
                   ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.person_outline_rounded,
                         size: 16,
                         color: AppTheme.neutral500,
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        schedule['assignedMemberName'] ?? '',
+                        (schedule['assignedMemberName'] as String?) ?? '',
                         style: AppTheme.bodySm,
                       ),
                     ],
@@ -509,7 +509,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             // Complete Button
             if (!isCompleted)
               IconButton(
-                onPressed: () => _markComplete(schedule['id']),
+                onPressed: () => _markComplete((schedule['id'] as String?) ?? ''),
                 icon: const Icon(Icons.check_circle_outline_rounded),
                 color: AppTheme.success,
               ),

@@ -1,8 +1,10 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:math' as math;
-import '../theme/app_theme.dart';
+
 import '../services/auth_service.dart';
+import '../theme/app_theme.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -126,7 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen>
     final isDesktop = screenWidth > 800;
 
     return Scaffold(
-      body: Container(
+      body: DecoratedBox(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xFF134E5E), Color(0xFF14B8A6)],
@@ -146,12 +148,10 @@ class _RegisterScreenState extends State<RegisterScreen>
       children: [
         // Left side - Form
         Expanded(
-          flex: 1,
           child: _buildMobileLayout(),
         ),
         // Right side - Animated decoration
         Expanded(
-          flex: 1,
           child: _buildAnimatedDecoration(),
         ),
       ],
@@ -159,7 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen>
   }
 
   Widget _buildAnimatedDecoration() {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -514,7 +514,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Expanded(
+                        const Expanded(
                           child: Text(
                             'Saya menyetujui Syarat & Ketentuan',
                             style: TextStyle(
@@ -619,7 +619,7 @@ class _RegisterScreenState extends State<RegisterScreen>
       style: const TextStyle(fontSize: 14),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: AppTheme.neutral400, fontSize: 14),
+        hintStyle: const TextStyle(color: AppTheme.neutral400, fontSize: 14),
         prefixIcon: Icon(icon, color: AppTheme.neutral400, size: 20),
         suffixIcon: suffixIcon,
         filled: true,
@@ -631,7 +631,7 @@ class _RegisterScreenState extends State<RegisterScreen>
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: AppTheme.neutral200),
+          borderSide: const BorderSide(color: AppTheme.neutral200),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -649,10 +649,10 @@ class _RegisterScreenState extends State<RegisterScreen>
 
 // Wave painter for animated background
 class WavePainter extends CustomPainter {
-  final double animation;
-  final Color color;
 
   WavePainter({required this.animation, required this.color});
+  final double animation;
+  final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {

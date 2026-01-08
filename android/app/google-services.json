@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "936404866531",
+    "project_id": "dormflow-8185a",
+    "storage_bucket": "dormflow-8185a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:936404866531:android:83fdf6a99e4022e4637cd6",
+        "android_client_info": {
+          "package_name": "com.example.dormflow_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB1EjF8k2juj0PtJziYeYqCUDdEjzdjRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

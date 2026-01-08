@@ -21,10 +21,7 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for ios - '
@@ -58,6 +55,14 @@ class DefaultFirebaseOptions {
     messagingSenderId: '936404866531',
     projectId: 'dormflow-8185a',
     authDomain: 'dormflow-8185a.firebaseapp.com',
+    storageBucket: 'dormflow-8185a.firebasestorage.app',
+  );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyDB1EjF8k2juj0PtJziYeYqCUDdEjzdjRU',
+    appId: '1:936404866531:android:83fdf6a99e4022e4637cd6',
+    messagingSenderId: '936404866531',
+    projectId: 'dormflow-8185a',
     storageBucket: 'dormflow-8185a.firebasestorage.app',
   );
 

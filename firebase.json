@@ -1,1 +1,1 @@
-{"flutter":{"platforms":{"dart":{"lib/firebase_options.dart":{"projectId":"dormflow-8185a","configurations":{"web":"1:936404866531:web:384949deeba4eabd637cd6"}}}}}}
+{"flutter":{"platforms":{"dart":{"lib/firebase_options.dart":{"projectId":"dormflow-8185a","configurations":{"android":"1:936404866531:android:83fdf6a99e4022e4637cd6"}}},"android":{"default":{"projectId":"dormflow-8185a","appId":"1:936404866531:android:83fdf6a99e4022e4637cd6","fileOutput":"android/app/google-services.json"}}}}}

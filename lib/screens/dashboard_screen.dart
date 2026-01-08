@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../theme/app_theme.dart';
+
 import '../services/schedule_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/theme_toggle.dart';
 import 'attendance_screen.dart';
 import 'finance_screen.dart';
@@ -59,7 +60,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildBottomNav() {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: AppTheme.surface,
         boxShadow: [
@@ -115,7 +116,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(width: 8),
               Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
                   color: AppTheme.primary,
@@ -153,21 +154,18 @@ class _TodayPageState extends State<TodayPage> {
           // App Bar
           SliverAppBar(
             expandedHeight: 180,
-            floating: false,
             pinned: true,
             backgroundColor: AppTheme.primary,
             automaticallyImplyLeading: false,
-            actions: [
+            actions: const [
               // Theme Toggle Icon
-              const ThemeCycleButton(
+              ThemeCycleButton(
                 iconColor: Colors.white,
-                size: 24,
-                showBackground: true,
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: 16),
             ],
             flexibleSpace: FlexibleSpaceBar(
-              background: Container(
+              background: DecoratedBox(
                 decoration: const BoxDecoration(
                   gradient: AppTheme.primaryGradient,
                 ),
@@ -365,7 +363,7 @@ class _TodayPageState extends State<TodayPage> {
             ),
             child: Column(
               children: [
-                Icon(
+                const Icon(
                   Icons.event_available_rounded,
                   size: 48,
                   color: AppTheme.neutral300,
@@ -385,7 +383,7 @@ class _TodayPageState extends State<TodayPage> {
           );
         }
 
-        return Container(
+        return DecoratedBox(
           decoration: BoxDecoration(
             color: AppTheme.surface,
             borderRadius: BorderRadius.circular(AppTheme.radiusLg),
@@ -395,7 +393,7 @@ class _TodayPageState extends State<TodayPage> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: schedules.length > 3 ? 3 : schedules.length,
-            separatorBuilder: (_, __) => Divider(
+            separatorBuilder: (_, __) => const Divider(
               height: 1,
               color: AppTheme.neutral100,
             ),
@@ -447,11 +445,11 @@ class _TodayPageState extends State<TodayPage> {
         child: Icon(icon, color: color, size: 22),
       ),
       title: Text(
-        schedule['taskName'] ?? '',
+        (schedule['taskName'] as String?) ?? '',
         style: AppTheme.labelLg,
       ),
       subtitle: Text(
-        schedule['assignedMemberName'] ?? '',
+        (schedule['assignedMemberName'] as String?) ?? '',
         style: AppTheme.bodySm,
       ),
       trailing: Container(
@@ -463,9 +461,9 @@ class _TodayPageState extends State<TodayPage> {
           borderRadius: BorderRadius.circular(AppTheme.radiusFull),
         ),
         child: Text(
-          schedule['status'] ?? 'Pending',
+          (schedule['status'] as String?) ?? 'Pending',
           style: AppTheme.labelSm.copyWith(
-            color: schedule['status'] == 'Selesai'
+            color: (schedule['status'] as String?) == 'Selesai'
                 ? AppTheme.success
                 : AppTheme.warning,
           ),

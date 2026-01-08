@@ -1,10 +1,12 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:math' as math;
-import '../theme/app_theme.dart';
+
 import '../services/auth_service.dart';
-import 'register_screen.dart';
+import '../theme/app_theme.dart';
 import 'dashboard_screen.dart';
+import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -101,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen>
     final isDesktop = screenWidth > 800;
 
     return Scaffold(
-      body: Container(
+      body: DecoratedBox(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xFF1E1B4B), Color(0xFF4F46E5)],
@@ -121,12 +123,10 @@ class _LoginScreenState extends State<LoginScreen>
       children: [
         // Left side - Animated decoration
         Expanded(
-          flex: 1,
           child: _buildAnimatedDecoration(),
         ),
         // Right side - Form
         Expanded(
-          flex: 1,
           child: _buildMobileLayout(),
         ),
       ],
@@ -134,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Widget _buildAnimatedDecoration() {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
@@ -455,7 +455,7 @@ class _LoginScreenState extends State<LoginScreen>
                             minimumSize: Size.zero,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          child: Text(
+                          child: const Text(
                             'Lupa Password?',
                             style: TextStyle(
                               fontSize: 12,
@@ -555,7 +555,7 @@ class _LoginScreenState extends State<LoginScreen>
       style: const TextStyle(fontSize: 14),
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: AppTheme.neutral400, fontSize: 14),
+        hintStyle: const TextStyle(color: AppTheme.neutral400, fontSize: 14),
         prefixIcon: Icon(icon, color: AppTheme.neutral400, size: 20),
         suffixIcon: suffixIcon,
         filled: true,
@@ -567,7 +567,7 @@ class _LoginScreenState extends State<LoginScreen>
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: AppTheme.neutral200),
+          borderSide: const BorderSide(color: AppTheme.neutral200),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -585,9 +585,9 @@ class _LoginScreenState extends State<LoginScreen>
 
 // Ring painter for animated background
 class RingPainter extends CustomPainter {
-  final double animation;
 
   RingPainter({required this.animation});
+  final double animation;
 
   @override
   void paint(Canvas canvas, Size size) {
