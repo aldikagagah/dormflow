@@ -1,6 +1,0 @@
-projectKey=dormflow-mobile
-serverUrl=http://localhost:9000
-serverVersion=26.1.0.118079
-dashboardUrl=http://localhost:9000/dashboard?id=dormflow-mobile
-ceTaskId=1b1387da-c5e1-4443-99dc-d1f17cdc51c8
-ceTaskUrl=http://localhost:9000/api/ce/task?id=1b1387da-c5e1-4443-99dc-d1f17cdc51c8
