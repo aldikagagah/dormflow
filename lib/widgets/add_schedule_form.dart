@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import '../services/schedule_service.dart';
 
 class AddScheduleForm extends StatefulWidget {
-  final Map<String, dynamic>? existingSchedule;
-  final VoidCallback? onSaved;
 
   const AddScheduleForm({
     super.key,
     this.existingSchedule,
     this.onSaved,
   });
+  final Map<String, dynamic>? existingSchedule;
+  final VoidCallback? onSaved;
 
   @override
   State<AddScheduleForm> createState() => _AddScheduleFormState();
@@ -40,11 +41,11 @@ class _AddScheduleFormState extends State<AddScheduleForm> {
     // If editing existing schedule
     if (widget.existingSchedule != null) {
       final data = widget.existingSchedule!;
-      _taskNameController.text = data['taskName'] ?? '';
-      _selectedCategory = data['category'] ?? 'Piket';
-      _selectedDate = data['date'] ?? DateTime.now();
-      _selectedMemberId = data['assignedMemberId'];
-      _selectedMemberName = data['assignedMemberName'];
+      _taskNameController.text = (data['taskName'] as String?) ?? '';
+      _selectedCategory = (data['category'] as String?) ?? 'Piket';
+      _selectedDate = (data['date'] as DateTime?) ?? DateTime.now();
+      _selectedMemberId = data['assignedMemberId'] as String?;
+      _selectedMemberName = data['assignedMemberName'] as String?;
     }
   }
 
@@ -56,8 +57,8 @@ class _AddScheduleFormState extends State<AddScheduleForm> {
       _members = members;
       // If no existing member selected and we have members, select first
       if (_selectedMemberId == null && members.isNotEmpty) {
-        _selectedMemberId = members.first['id'];
-        _selectedMemberName = members.first['name'];
+        _selectedMemberId = members.first['id'] as String?;
+        _selectedMemberName = members.first['name'] as String?;
       }
       // If editing and members list is empty, use manual input
       if (_members.isEmpty && _selectedMemberName != null) {
@@ -77,8 +78,6 @@ class _AddScheduleFormState extends State<AddScheduleForm> {
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
               primary: Colors.indigo,
-              onPrimary: Colors.white,
-              surface: Colors.white,
               onSurface: Colors.black87,
             ),
           ),
@@ -125,7 +124,7 @@ class _AddScheduleFormState extends State<AddScheduleForm> {
     if (widget.existingSchedule != null) {
       // Update existing
       result = await _service.updateSchedule(
-        widget.existingSchedule!['id'],
+        (widget.existingSchedule!['id'] as String?) ?? '',
         {
           'taskName': _taskNameController.text.trim(),
           'category': _selectedCategory,
@@ -149,7 +148,7 @@ class _AddScheduleFormState extends State<AddScheduleForm> {
     if (!mounted) return;
     setState(() => _isLoading = false);
 
-    if (result == "success") {
+    if (result == 'success') {
       widget.onSaved?.call();
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -380,7 +379,7 @@ class _AddScheduleFormState extends State<AddScheduleForm> {
               else
                 // Dropdown when members exist
                 DropdownButtonFormField<String>(
-                  value: _selectedMemberId,
+                  initialValue: _selectedMemberId,
                   decoration: InputDecoration(
                     labelText: 'Pilih Anggota Asrama',
                     prefixIcon: const Icon(Icons.person_outline),

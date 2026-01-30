@@ -18,12 +18,12 @@ class ScheduleService {
   }) async {
     try {
       final user = currentUser;
-      if (user == null) return "User not logged in";
+      if (user == null) return 'User not logged in';
 
       final dateStr = DateFormat('yyyy-MM-dd').format(date);
       final weekNumber = _getWeekNumber(date);
 
-      await _db.collection("schedules").add({
+      await _db.collection('schedules').add({
         'taskName': taskName,
         'category': category,
         'assignedMemberId': assignedMemberId,
@@ -36,32 +36,32 @@ class ScheduleService {
         'createdAt': FieldValue.serverTimestamp(),
       });
 
-      return "success";
+      return 'success';
     } catch (e) {
-      return "error: $e";
+      return 'error: $e';
     }
   }
 
   /// Updates an existing schedule.
   Future<String> updateSchedule(String id, Map<String, dynamic> data) async {
     try {
-      await _db.collection("schedules").doc(id).update({
+      await _db.collection('schedules').doc(id).update({
         ...data,
         'updatedAt': FieldValue.serverTimestamp(),
       });
-      return "success";
+      return 'success';
     } catch (e) {
-      return "error: $e";
+      return 'error: $e';
     }
   }
 
   /// Deletes a schedule.
   Future<String> deleteSchedule(String id) async {
     try {
-      await _db.collection("schedules").doc(id).delete();
-      return "success";
+      await _db.collection('schedules').doc(id).delete();
+      return 'success';
     } catch (e) {
-      return "error: $e";
+      return 'error: $e';
     }
   }
 
@@ -77,7 +77,7 @@ class ScheduleService {
 
     // Simple query without orderBy to avoid needing composite index
     return _db
-        .collection("schedules")
+        .collection('schedules')
         .where('dateString', isGreaterThanOrEqualTo: startStr)
         .where('dateString', isLessThanOrEqualTo: endStr)
         .snapshots()
@@ -110,7 +110,7 @@ class ScheduleService {
 
     // Simple query without orderBy to avoid needing composite index
     return _db
-        .collection("schedules")
+        .collection('schedules')
         .where('dateString', isEqualTo: dateStr)
         .snapshots()
         .map((snapshot) {
@@ -129,7 +129,7 @@ class ScheduleService {
   /// Get all members from users collection.
   Future<List<Map<String, dynamic>>> getMembers() async {
     try {
-      final snapshot = await _db.collection("users").get();
+      final snapshot = await _db.collection('users').get();
       return snapshot.docs.map((doc) {
         final data = doc.data();
         return {
@@ -145,7 +145,7 @@ class ScheduleService {
 
   /// Calculate ISO week number.
   int _getWeekNumber(DateTime date) {
-    final firstDayOfYear = DateTime(date.year, 1, 1);
+    final firstDayOfYear = DateTime(date.year);
     final daysDiff = date.difference(firstDayOfYear).inDays;
     return ((daysDiff + firstDayOfYear.weekday) / 7).ceil();
   }

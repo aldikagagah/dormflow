@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
-  final Function(String, String, double, String, DateTime) onSubmit;
 
   const TransactionForm({super.key, required this.onSubmit});
+  final Function(String, String, double, String, DateTime) onSubmit;
 
   @override
   State<TransactionForm> createState() => _TransactionFormState();
@@ -12,19 +12,19 @@ class TransactionForm extends StatefulWidget {
 
 class _TransactionFormState extends State<TransactionForm> {
   final _formKey = GlobalKey<FormState>();
-  String _type = "Pengeluaran";
-  String _category = "Operasional";
+  String _type = 'Pengeluaran';
+  String _category = 'Operasional';
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
 
   final List<String> _categories = [
-    "Operasional",
-    "Gaji",
-    "Transportasi",
-    "Makan & Minum",
-    "Perlengkapan",
-    "Lain-lain"
+    'Operasional',
+    'Gaji',
+    'Transportasi',
+    'Makan & Minum',
+    'Perlengkapan',
+    'Lain-lain'
   ];
 
   @override
@@ -58,7 +58,7 @@ class _TransactionFormState extends State<TransactionForm> {
              ),
              const SizedBox(height: 20),
              const Text(
-               "Tambah Transaksi",
+               'Tambah Transaksi',
                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
              ),
              const SizedBox(height: 20),
@@ -67,11 +67,11 @@ class _TransactionFormState extends State<TransactionForm> {
              Row(
                children: [
                  Expanded(
-                   child: _typeButton("Pemasukan", Colors.green),
+                   child: _typeButton('Pemasukan', Colors.green),
                  ),
                  const SizedBox(width: 12),
                  Expanded(
-                   child: _typeButton("Pengeluaran", Colors.red),
+                   child: _typeButton('Pengeluaran', Colors.red),
                  ),
                ],
              ),
@@ -82,13 +82,13 @@ class _TransactionFormState extends State<TransactionForm> {
                controller: _amountController,
                keyboardType: TextInputType.number,
                decoration: const InputDecoration(
-                 labelText: "Nominal (Rp)",
-                 prefixText: "Rp ",
+                 labelText: 'Nominal (Rp)',
+                 prefixText: 'Rp ',
                  border: OutlineInputBorder(),
                ),
                validator: (value) {
-                 if (value == null || value.isEmpty) return "Wajib diisi";
-                 if (double.tryParse(value) == null) return "Harus angka";
+                 if (value == null || value.isEmpty) return 'Wajib diisi';
+                 if (double.tryParse(value) == null) return 'Harus angka';
                  return null;
                },
              ),
@@ -99,8 +99,8 @@ class _TransactionFormState extends State<TransactionForm> {
                children: [
                  Expanded(
                    child: DropdownButtonFormField<String>(
-                     value: _category,
-                     decoration: const InputDecoration(labelText: "Kategori", border: OutlineInputBorder()),
+                     initialValue: _category,
+                     decoration: const InputDecoration(labelText: 'Kategori', border: OutlineInputBorder()),
                      items: _categories.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList(),
                      onChanged: (val) => setState(() => _category = val!),
                    ),
@@ -118,7 +118,7 @@ class _TransactionFormState extends State<TransactionForm> {
                        if (date != null) setState(() => _selectedDate = date);
                      },
                      child: InputDecorator(
-                       decoration: const InputDecoration(labelText: "Tanggal", border: OutlineInputBorder()),
+                       decoration: const InputDecoration(labelText: 'Tanggal', border: OutlineInputBorder()),
                        child: Text(DateFormat('dd MMM yyyy').format(_selectedDate)),
                      ),
                    ),
@@ -131,10 +131,10 @@ class _TransactionFormState extends State<TransactionForm> {
              TextFormField(
                controller: _descController,
                decoration: const InputDecoration(
-                 labelText: "Deskripsi",
+                 labelText: 'Deskripsi',
                  border: OutlineInputBorder(),
                ),
-               validator: (val) => (val == null || val.isEmpty) ? "Wajib diisi" : null,
+               validator: (val) => (val == null || val.isEmpty) ? 'Wajib diisi' : null,
              ),
              const SizedBox(height: 24),
 
@@ -156,11 +156,11 @@ class _TransactionFormState extends State<TransactionForm> {
                    }
                  },
                  style: ElevatedButton.styleFrom(
-                   backgroundColor: _type == "Pemasukan" ? Colors.green : Colors.red,
+                   backgroundColor: _type == 'Pemasukan' ? Colors.green : Colors.red,
                    foregroundColor: Colors.white,
                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                  ),
-                 child: const Text("Simpan Transaksi", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                 child: const Text('Simpan Transaksi', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                ),
              ),
           ],

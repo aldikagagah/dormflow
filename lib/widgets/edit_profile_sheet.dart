@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class EditProfileSheet extends StatefulWidget {
-  final Map<String, dynamic> initialData;
-  final Future<String> Function(String, String, String) onSave;
 
   const EditProfileSheet({
     super.key,
     required this.initialData,
     required this.onSave,
   });
+  final Map<String, dynamic> initialData;
+  final Future<String> Function(String, String, String) onSave;
 
   @override
   State<EditProfileSheet> createState() => _EditProfileSheetState();
@@ -24,9 +24,9 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
   @override
   void initState() {
     super.initState();
-    _nameCtrl = TextEditingController(text: widget.initialData['displayName']);
-    _phoneCtrl = TextEditingController(text: widget.initialData['phone']);
-    _addressCtrl = TextEditingController(text: widget.initialData['address']);
+    _nameCtrl = TextEditingController(text: (widget.initialData['displayName'] as String?) ?? '');
+    _phoneCtrl = TextEditingController(text: (widget.initialData['phone'] as String?) ?? '');
+    _addressCtrl = TextEditingController(text: (widget.initialData['address'] as String?) ?? '');
   }
 
   @override
@@ -49,10 +49,10 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
     setState(() => _isLoading = false);
 
     if (mounted) {
-      if (result == "success") {
+      if (result == 'success') {
         Navigator.pop(context, true); // Return true on success
         ScaffoldMessenger.of(context).showSnackBar(
-           const SnackBar(content: Text("Profil diperbarui"), backgroundColor: Colors.green),
+           const SnackBar(content: Text('Profil diperbarui'), backgroundColor: Colors.green),
         );
       } else {
          ScaffoldMessenger.of(context).showSnackBar(
@@ -93,7 +93,7 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
             ),
             const SizedBox(height: 20),
             const Text(
-              "Edit Profil",
+              'Edit Profil',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
@@ -102,18 +102,18 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
             TextFormField(
               controller: _nameCtrl,
               decoration: const InputDecoration(
-                labelText: "Nama Lengkap",
+                labelText: 'Nama Lengkap',
                 prefixIcon: Icon(Icons.person_outline),
                 border: OutlineInputBorder(),
               ),
-              validator: (v) => v!.isEmpty ? "Wajib diisi" : null,
+              validator: (v) => v!.isEmpty ? 'Wajib diisi' : null,
             ),
             const SizedBox(height: 16),
 
             TextFormField(
               controller: _phoneCtrl,
               decoration: const InputDecoration(
-                labelText: "Nomor Telepon",
+                labelText: 'Nomor Telepon',
                 prefixIcon: Icon(Icons.phone_outlined),
                 border: OutlineInputBorder(),
               ),
@@ -124,7 +124,7 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
             TextFormField(
               controller: _addressCtrl,
               decoration: const InputDecoration(
-                labelText: "Alamat",
+                labelText: 'Alamat',
                 prefixIcon: Icon(Icons.location_on_outlined),
                 border: OutlineInputBorder(),
               ),
@@ -143,7 +143,7 @@ class _EditProfileSheetState extends State<EditProfileSheet> {
                 ),
                 child: _isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text("Simpan Perubahan", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    : const Text('Simpan Perubahan', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
             ),
           ],

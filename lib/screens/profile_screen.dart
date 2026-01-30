@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import '../theme/app_theme.dart';
+
 import '../providers/theme_provider.dart';
-import '../services/profile_service.dart';
 import '../services/auth_service.dart';
+import '../services/profile_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/edit_profile_sheet.dart';
 import 'login_screen.dart';
 
@@ -47,12 +48,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Profile Header
           SliverAppBar(
             expandedHeight: 280,
-            floating: false,
             pinned: true,
             backgroundColor: AppTheme.primary,
             automaticallyImplyLeading: false,
             flexibleSpace: FlexibleSpaceBar(
-              background: Container(
+              background: DecoratedBox(
                 decoration: const BoxDecoration(
                   gradient: AppTheme.primaryGradient,
                 ),
@@ -74,15 +74,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: CircleAvatar(
                           radius: 50,
                           backgroundColor: Colors.white.withValues(alpha: 0.2),
-                          backgroundImage: _profile['photoUrl'] != null
-                              ? NetworkImage(_profile['photoUrl'])
+                          backgroundImage: ((_profile['photoUrl'] as String?) ?? '').isNotEmpty
+                              ? NetworkImage((_profile['photoUrl'] as String?) ?? '')
                               : null,
-                          child: _profile['photoUrl'] == null
+                          child: ((_profile['photoUrl'] as String?) ?? '').isEmpty
                               ? Text(
-                                  (_profile['name'] ?? 'U')[0].toUpperCase(),
+                                  (((_profile['name'] as String?) ?? 'U')[0]).toUpperCase(),
                                   style: const TextStyle(
                                     fontSize: 40,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.w600,
                                     color: Colors.white,
                                   ),
                                 )
@@ -92,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(height: 16),
                       // Name
                       Text(
-                        _profile['name'] ?? 'User',
+                        ((_profile['name'] as String?) ?? 'User'),
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -102,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(height: 4),
                       // Email
                       Text(
-                        _profile['email'] ?? '',
+                        ((_profile['email'] as String?) ?? ''),
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.white.withValues(alpha: 0.9),
@@ -131,7 +131,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             const SizedBox(width: 6),
                             Text(
-                              _profile['role'] ?? 'Member',
+                              ((_profile['role'] as String?) ?? 'Member'),
                               style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,
@@ -173,19 +173,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       _infoTile(
                         Icons.phone_rounded,
                         'Telepon',
-                        _profile['phone'] ?? '-',
+                        ((_profile['phone'] as String?) ?? '-'),
                       ),
                       _infoTile(
                         Icons.location_on_rounded,
                         'Alamat',
-                        _profile['address'] ?? '-',
+                        ((_profile['address'] as String?) ?? '-'),
                       ),
                       _infoTile(
                         Icons.calendar_today_rounded,
                         'Bergabung',
                         _profile['createdAt'] != null
                             ? DateFormat('dd MMMM yyyy').format(
-                                DateTime.parse(_profile['createdAt']))
+                                DateTime.parse((_profile['createdAt'] as String?) ?? ''))
                             : '-',
                       ),
                     ],
@@ -336,7 +336,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Text(title, style: AppTheme.headingSm),
         const SizedBox(height: AppTheme.spacingMd),
-        Container(
+        DecoratedBox(
           decoration: BoxDecoration(
             color: AppTheme.surface,
             borderRadius: BorderRadius.circular(AppTheme.radiusLg),
@@ -400,7 +400,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       trailing: trailing ??
-          Icon(
+          const Icon(
             Icons.chevron_right_rounded,
             color: AppTheme.neutral400,
           ),
@@ -433,7 +433,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             themeProvider.themeModeLabel,
             style: AppTheme.bodySm,
           ),
-          trailing: Icon(
+          trailing: const Icon(
             Icons.chevron_right_rounded,
             color: AppTheme.neutral400,
           ),
@@ -527,7 +527,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             if (isSelected)
-              Icon(
+              const Icon(
                 Icons.check_circle_rounded,
                 color: AppTheme.primary,
                 size: 20,
@@ -706,4 +706,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     }
   }
+
 }

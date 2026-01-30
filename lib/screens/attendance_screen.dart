@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../theme/app_theme.dart';
+
 import '../services/attendance_service.dart';
+import '../theme/app_theme.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({super.key});
@@ -14,19 +16,19 @@ class AttendanceScreen extends StatefulWidget {
 class _AttendanceScreenState extends State<AttendanceScreen>
     with SingleTickerProviderStateMixin {
   final AttendanceService _service = AttendanceService();
-  String _currentTime = "";
-  String _currentDate = "";
+  String _currentTime = '';
+  String _currentDate = '';
   Timer? _timer;
   bool _isLoading = false;
   bool _showSuccess = false;
-  String _successMessage = "";
+  String _successMessage = '';
 
   // Attendance State
   bool _hasCheckedIn = false;
   bool _hasCheckedOut = false;
   String? _checkInTime;
   String? _checkOutTime;
-  String _status = "Belum Absen";
+  String _status = 'Belum Absen';
 
   late AnimationController _animController;
   late Animation<double> _scaleAnim;
@@ -54,9 +56,9 @@ class _AttendanceScreenState extends State<AttendanceScreen>
 
     setState(() {
       _isLoading = false;
-      _checkInTime = status['checkIn'];
-      _checkOutTime = status['checkOut'];
-      _status = status['status'] ?? "Belum Absen";
+      _checkInTime = status['checkIn'] as String?;
+      _checkOutTime = status['checkOut'] as String?;
+      _status = (status['status'] as String?) ?? 'Belum Absen';
       _hasCheckedIn = status['hasCheckedIn'] == true;
       _hasCheckedOut = status['hasCheckedOut'] == true;
     });
@@ -85,10 +87,10 @@ class _AttendanceScreenState extends State<AttendanceScreen>
 
     if (!mounted) return;
 
-    if (result == "success") {
+    if (result == 'success') {
       setState(() {
         _showSuccess = true;
-        _successMessage = type == "Masuk" ? "Check-In Berhasil!" : "Check-Out Berhasil!";
+        _successMessage = type == 'Masuk' ? 'Check-In Berhasil!' : 'Check-Out Berhasil!';
       });
       _animController.forward(from: 0);
 
@@ -126,12 +128,11 @@ class _AttendanceScreenState extends State<AttendanceScreen>
               // App Bar with Clock
               SliverAppBar(
                 expandedHeight: 200,
-                floating: false,
                 pinned: true,
                 backgroundColor: AppTheme.secondary,
                 automaticallyImplyLeading: false,
                 flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
+                  background: DecoratedBox(
                     decoration: const BoxDecoration(
                       gradient: AppTheme.secondaryGradient,
                     ),
@@ -221,21 +222,21 @@ class _AttendanceScreenState extends State<AttendanceScreen>
     switch (state) {
       case AttendanceState.notCheckedIn:
         statusColor = AppTheme.neutral500;
-        statusText = "Belum Check-In";
+        statusText = 'Belum Check-In';
         statusIcon = Icons.schedule_rounded;
-        statusDescription = "Silakan lakukan check-in untuk memulai";
+        statusDescription = 'Silakan lakukan check-in untuk memulai';
         break;
       case AttendanceState.checkedIn:
         statusColor = AppTheme.success;
         statusText = _status;
         statusIcon = Icons.check_circle_rounded;
-        statusDescription = "Anda sudah check-in, jangan lupa check-out";
+        statusDescription = 'Anda sudah check-in, jangan lupa check-out';
         break;
       case AttendanceState.completed:
         statusColor = AppTheme.primary;
-        statusText = "Selesai";
+        statusText = 'Selesai';
         statusIcon = Icons.verified_rounded;
-        statusDescription = "Absensi hari ini telah selesai";
+        statusDescription = 'Absensi hari ini telah selesai';
         break;
     }
 
@@ -295,7 +296,7 @@ class _AttendanceScreenState extends State<AttendanceScreen>
         Expanded(
           child: _timeCard(
             icon: Icons.login_rounded,
-            label: "Check In",
+            label: 'Check In',
             time: _checkInTime,
             color: AppTheme.success,
             isActive: _hasCheckedIn,
@@ -305,7 +306,7 @@ class _AttendanceScreenState extends State<AttendanceScreen>
         Expanded(
           child: _timeCard(
             icon: Icons.logout_rounded,
-            label: "Check Out",
+            label: 'Check Out',
             time: _checkOutTime,
             color: AppTheme.warning,
             isActive: _hasCheckedOut,
@@ -351,7 +352,7 @@ class _AttendanceScreenState extends State<AttendanceScreen>
           Text(label, style: AppTheme.bodySm),
           const SizedBox(height: 4),
           Text(
-            time ?? "--:--",
+            time ?? '--:--',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -372,25 +373,25 @@ class _AttendanceScreenState extends State<AttendanceScreen>
       children: [
         Expanded(
           child: _actionButton(
-            label: "Check In",
+            label: 'Check In',
             icon: Icons.fingerprint_rounded,
             color: AppTheme.success,
             isEnabled: canCheckIn,
             isPrimary: true,
             isLoading: _isLoading && !_hasCheckedIn,
-            onTap: () => _handleAttendance("Masuk"),
+            onTap: () => _handleAttendance('Masuk'),
           ),
         ),
         const SizedBox(width: AppTheme.spacingMd),
         Expanded(
           child: _actionButton(
-            label: "Check Out",
+            label: 'Check Out',
             icon: Icons.exit_to_app_rounded,
             color: AppTheme.warning,
             isEnabled: canCheckOut,
             isPrimary: false,
             isLoading: _isLoading && _hasCheckedIn && !_hasCheckedOut,
-            onTap: () => _handleAttendance("Keluar"),
+            onTap: () => _handleAttendance('Keluar'),
           ),
         ),
       ],
@@ -519,7 +520,7 @@ class _AttendanceScreenState extends State<AttendanceScreen>
                 ),
                 child: Column(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.history_rounded,
                       size: 48,
                       color: AppTheme.neutral300,
@@ -534,7 +535,7 @@ class _AttendanceScreenState extends State<AttendanceScreen>
               );
             }
 
-            return Container(
+            return DecoratedBox(
               decoration: BoxDecoration(
                 color: AppTheme.surface,
                 borderRadius: BorderRadius.circular(AppTheme.radiusLg),
@@ -544,13 +545,13 @@ class _AttendanceScreenState extends State<AttendanceScreen>
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: history.length > 10 ? 10 : history.length,
-                separatorBuilder: (_, __) => Divider(
+                separatorBuilder: (_, __) => const Divider(
                   height: 1,
                   color: AppTheme.neutral100,
                 ),
                 itemBuilder: (context, index) {
                   final item = history[index];
-                  final isCheckIn = item['type'] == 'Masuk';
+                  final isCheckIn = (item['type'] as String?) == 'Masuk';
 
                   return ListTile(
                     contentPadding: const EdgeInsets.symmetric(
@@ -572,11 +573,11 @@ class _AttendanceScreenState extends State<AttendanceScreen>
                       ),
                     ),
                     title: Text(
-                      isCheckIn ? "Check In" : "Check Out",
+                      isCheckIn ? 'Check In' : 'Check Out',
                       style: AppTheme.labelLg,
                     ),
                     subtitle: Text(
-                      item['date'],
+                      (item['date'] as String?) ?? '',
                       style: AppTheme.bodySm,
                     ),
                     trailing: Column(
@@ -584,7 +585,7 @@ class _AttendanceScreenState extends State<AttendanceScreen>
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          item['time'],
+                          (item['time'] as String?) ?? '',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -597,14 +598,14 @@ class _AttendanceScreenState extends State<AttendanceScreen>
                             vertical: 2,
                           ),
                           decoration: BoxDecoration(
-                            color: _getStatusColor(item['status'])
+                            color: _getStatusColor((item['status'] as String?) ?? '')
                                 .withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(AppTheme.radiusFull),
                           ),
                           child: Text(
-                            item['status'],
+                            (item['status'] as String?) ?? '',
                             style: AppTheme.labelSm.copyWith(
-                              color: _getStatusColor(item['status']),
+                              color: _getStatusColor((item['status'] as String?) ?? ''),
                             ),
                           ),
                         ),
@@ -637,7 +638,7 @@ class _AttendanceScreenState extends State<AttendanceScreen>
     return AnimatedBuilder(
       animation: _animController,
       builder: (context, child) {
-        return Container(
+        return ColoredBox(
           color: Colors.black.withValues(alpha: 0.4),
           child: Center(
             child: Transform.scale(
@@ -659,7 +660,7 @@ class _AttendanceScreenState extends State<AttendanceScreen>
                         color: AppTheme.success.withValues(alpha: 0.1),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.check_circle_rounded,
                         size: 64,
                         color: AppTheme.success,
@@ -674,7 +675,7 @@ class _AttendanceScreenState extends State<AttendanceScreen>
                     const SizedBox(height: AppTheme.spacingSm),
                     Text(
                       _currentTime,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: AppTheme.primary,

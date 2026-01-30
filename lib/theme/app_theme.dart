@@ -196,7 +196,6 @@ class AppTheme {
 
     colorScheme: ColorScheme.fromSeed(
       seedColor: primary,
-      brightness: Brightness.light,
       primary: primary,
       secondary: secondary,
       surface: surface,
@@ -274,7 +273,7 @@ class AppTheme {
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radiusMd),
-        borderSide: BorderSide(color: neutral200),
+        borderSide: const BorderSide(color: neutral200),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(radiusMd),
@@ -289,14 +288,14 @@ class AppTheme {
       hintStyle: bodyMd.copyWith(color: neutral400),
     ),
 
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: surface,
       selectedItemColor: primary,
       unselectedItemColor: neutral400,
       type: BottomNavigationBarType.fixed,
       elevation: 0,
-      selectedLabelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-      unselectedLabelStyle: const TextStyle(fontSize: 11),
+      selectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+      unselectedLabelStyle: TextStyle(fontSize: 11),
     ),
 
     floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -317,7 +316,7 @@ class AppTheme {
       behavior: SnackBarBehavior.floating,
     ),
 
-    dividerTheme: DividerThemeData(
+    dividerTheme: const DividerThemeData(
       color: neutral200,
       thickness: 1,
     ),

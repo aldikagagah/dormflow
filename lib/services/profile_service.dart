@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 class ProfileService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -14,25 +15,25 @@ class ProfileService {
 
     try {
       final doc = await _db.collection('users').doc(user.uid).get();
-      final data = doc.exists ? doc.data() as Map<String, dynamic> : {};
+      final data = doc.exists ? doc.data() as Map<String, dynamic> : <String, dynamic>{};
 
       String name = user.displayName ?? '';
       if (name.isEmpty) {
-        name = data['name'] ?? 'Admin';
+        name = (data['name'] as String?) ?? 'Admin';
       }
 
       return {
         'uid': user.uid,
         'email': user.email,
-        'displayName': name,
-        'photoURL': user.photoURL,
-        'phone': data['phone'] ?? '',
-        'address': data['address'] ?? '',
-        'role': data['role'] ?? 'Admin',
+        'name': name,
+        'photoUrl': (data['photoUrl'] as String?) ?? user.photoURL,
+        'phone': (data['phone'] as String?) ?? '',
+        'address': (data['address'] as String?) ?? '',
+        'role': (data['role'] as String?) ?? 'Admin',
         'createdAt': (user.metadata.creationTime)?.toIso8601String(),
       };
     } catch (e) {
-      print("Error fetching profile: $e");
+      debugPrint('Error fetching profile: $e');
       return {};
     }
   }
@@ -44,7 +45,7 @@ class ProfileService {
     required String address,
   }) async {
     final user = currentUser;
-    if (user == null) return "User not logged in";
+    if (user == null) return 'User not logged in';
 
     try {
       // Update Firebase Auth Display Name
@@ -58,9 +59,9 @@ class ProfileService {
         'updatedAt': FieldValue.serverTimestamp(),
       }, SetOptions(merge: true));
 
-      return "success";
+      return 'success';
     } catch (e) {
-      return "error: $e";
+      return 'error: $e';
     }
   }
 
@@ -70,7 +71,7 @@ class ProfileService {
     String newPassword,
   ) async {
     final user = currentUser;
-    if (user == null) return "User not logged in";
+    if (user == null) return 'User not logged in';
 
     try {
       // Re-authenticate user
@@ -82,12 +83,12 @@ class ProfileService {
 
       // Update Password
       await user.updatePassword(newPassword);
-      return "success";
+      return 'success';
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'wrong-password') return "Password lama salah";
-      return "error: ${e.message}";
+      if (e.code == 'wrong-password') return 'Password lama salah';
+      return 'error: ${e.message}';
     } catch (e) {
-      return "error: $e";
+      return 'error: $e';
     }
   }
 }

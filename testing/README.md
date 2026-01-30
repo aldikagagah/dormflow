@@ -9,58 +9,52 @@ testing/
 ├── README.md                  # Dokumen ini
 ├── usability-testing.md       # Laporan Usability Testing
 └── integration-testing.md     # Laporan Integration Testing
+
+integration_test/
+├── app_test.dart              # Main integration test (14 tests)
+└── robots/
+    └── app_robot.dart         # Test helper dengan Page Object Model
+
+test_driver/
+└── integration_test.dart      # Test driver
 ```
 
-## 📄 Daftar Dokumen
+## 📊 Test Summary
 
-### 1. [Usability Testing](./usability-testing.md)
-Pengujian kemudahan penggunaan aplikasi dari perspektif pengguna akhir.
+| Type | Tests | Status |
+|------|-------|--------|
+| Unit Tests | 160 | ✅ Passed |
+| Integration Tests | 14 | Ready to run |
+| Usability Tests | 8 | ✅ Documented |
 
-| Metrik | Nilai |
-|--------|-------|
-| Total Test Cases | 8 |
-| Success Rate | 100% |
-| User Satisfaction | 4.52/5 |
+## 🚀 Menjalankan Test
 
-**Fitur yang Diuji:**
-- Login & Register
-- Navigasi Dashboard
-- Manajemen Keuangan
-- Pencatatan Kehadiran
-- Manajemen Jadwal
-- Edit Profil
-- Dark Mode
+### Unit Tests
+```bash
+flutter test
+```
 
-### 2. [Integration Testing](./integration-testing.md)
-Pengujian integrasi antar komponen sistem.
+### Integration Tests
+```bash
+# Via flutter test
+flutter test integration_test/app_test.dart
 
-| Metrik | Nilai |
-|--------|-------|
-| Total Test Scenarios | 7 |
-| Success Rate | 100% |
-| Integration Points | 6 |
+# Via flutter drive
+flutter drive \
+  --driver=test_driver/integration_test.dart \
+  --target=integration_test/app_test.dart
+```
 
-**Integrasi yang Diuji:**
-- UI → Firebase Auth
-- UI → Cloud Firestore
-- Repository Pattern
-- State Management
-- Security Layer
-- Data Persistence
+### VS Code
+1. Buka **Run and Debug** (Ctrl+Shift+D)
+2. Pilih "Integration Tests" dari dropdown
+3. Klik ▶️ Run
 
-## 🛠️ Metodologi
+## 📄 Dokumen Testing
 
-- **Usability Testing:** Manual Testing & User Observation
-- **Integration Testing:** Black Box Testing & API Verification
-
-## 📅 Informasi
-
-| Item | Detail |
-|------|--------|
-| Tanggal Pengujian | 3 Januari 2026 |
-| Versi Aplikasi | 1.0.0 |
-| Penguji | Tim QA DormFlow |
+- [Usability Testing](./usability-testing.md) - 8 test cases
+- [Integration Testing](./integration-testing.md) - 7 test scenarios
 
 ---
 
-*Dokumentasi ini disusun untuk keperluan tugas mata kuliah Analisis & Pengujian Sistem.*
+*DormFlow Mobile Testing Suite - Januari 2026*

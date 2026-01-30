@@ -3,13 +3,6 @@ import '../theme/app_theme.dart';
 
 /// Widget SliverAppBar yang konsisten untuk semua screen
 class AppHeader extends StatelessWidget {
-  final String title;
-  final String? subtitle;
-  final Color? backgroundColor;
-  final Gradient? gradient;
-  final Widget? trailing;
-  final double expandedHeight;
-  final bool showBackButton;
 
   const AppHeader({
     super.key,
@@ -21,6 +14,13 @@ class AppHeader extends StatelessWidget {
     this.expandedHeight = 120,
     this.showBackButton = false,
   });
+  final String title;
+  final String? subtitle;
+  final Color? backgroundColor;
+  final Gradient? gradient;
+  final Widget? trailing;
+  final double expandedHeight;
+  final bool showBackButton;
 
   // Preset untuk warna
   static Gradient get primaryGradient => AppTheme.primaryGradient;
@@ -45,12 +45,11 @@ class AppHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       expandedHeight: expandedHeight,
-      floating: false,
       pinned: true,
       backgroundColor: backgroundColor ?? AppTheme.primary,
       automaticallyImplyLeading: showBackButton,
       flexibleSpace: FlexibleSpaceBar(
-        background: Container(
+        background: DecoratedBox(
           decoration: BoxDecoration(
             gradient: gradient ?? primaryGradient,
             color: gradient == null ? backgroundColor : null,
@@ -105,9 +104,6 @@ class AppHeader extends StatelessWidget {
 
 /// Widget untuk header pill/badge
 class HeaderBadge extends StatelessWidget {
-  final String label;
-  final IconData? icon;
-  final VoidCallback? onTap;
 
   const HeaderBadge({
     super.key,
@@ -115,6 +111,9 @@ class HeaderBadge extends StatelessWidget {
     this.icon,
     this.onTap,
   });
+  final String label;
+  final IconData? icon;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {

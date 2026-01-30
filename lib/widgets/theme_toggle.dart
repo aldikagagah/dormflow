@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/theme_provider.dart';
 import '../theme/app_theme.dart';
 
 /// Widget tombol icon untuk toggle tema
 class ThemeToggleButton extends StatelessWidget {
-  final Color? iconColor;
-  final double size;
 
   const ThemeToggleButton({
     super.key,
     this.iconColor,
     this.size = 24,
   });
+  final Color? iconColor;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +85,7 @@ class ThemeToggleButton extends StatelessWidget {
             ),
           ),
           if (isSelected)
-            Icon(
+            const Icon(
               Icons.check_rounded,
               size: 18,
               color: AppTheme.primary,
@@ -97,9 +98,6 @@ class ThemeToggleButton extends StatelessWidget {
 
 /// Widget tombol sederhana cycle theme (tap untuk ganti)
 class ThemeCycleButton extends StatelessWidget {
-  final Color? iconColor;
-  final double size;
-  final bool showBackground;
 
   const ThemeCycleButton({
     super.key,
@@ -107,6 +105,9 @@ class ThemeCycleButton extends StatelessWidget {
     this.size = 24,
     this.showBackground = false,
   });
+  final Color? iconColor;
+  final double size;
+  final bool showBackground;
 
   @override
   Widget build(BuildContext context) {

@@ -18,9 +18,9 @@ class FinanceService {
   }) async {
     try {
       final user = currentUser;
-      if (user == null) return "User not logged in";
+      if (user == null) return 'User not logged in';
 
-      await _db.collection("transactions").add({
+      await _db.collection('transactions').add({
         'userId': user.uid,
         'type': type,
         'category': category,
@@ -31,29 +31,29 @@ class FinanceService {
         'monthYear': DateFormat('yyyy-MM').format(date), // For filtering
       });
 
-      return "success";
+      return 'success';
     } catch (e) {
-      return "error: $e";
+      return 'error: $e';
     }
   }
 
   /// Deletes a transaction.
   Future<String> deleteTransaction(String id) async {
     try {
-      await _db.collection("transactions").doc(id).delete();
-      return "success";
+      await _db.collection('transactions').doc(id).delete();
+      return 'success';
     } catch (e) {
-      return "error: $e";
+      return 'error: $e';
     }
   }
 
   /// Updates a transaction.
   Future<String> updateTransaction(String id, Map<String, dynamic> data) async {
     try {
-      await _db.collection("transactions").doc(id).update(data);
-      return "success";
+      await _db.collection('transactions').doc(id).update(data);
+      return 'success';
     } catch (e) {
-      return "error: $e";
+      return 'error: $e';
     }
   }
 
@@ -66,7 +66,7 @@ class FinanceService {
 
     // Simple query without orderBy to avoid needing composite index
     return _db
-        .collection("transactions")
+        .collection('transactions')
         .where('userId', isEqualTo: user.uid)
         .where('monthYear', isEqualTo: monthStr)
         .snapshots()
@@ -97,8 +97,8 @@ class FinanceService {
       double income = 0;
       double expense = 0;
 
-      for (var t in transactions) {
-        if (t['type'] == "Pemasukan") {
+      for (final t in transactions) {
+        if (t['type'] == 'Pemasukan') {
           income += (t['amount'] as num).toDouble();
         } else {
           expense += (t['amount'] as num).toDouble();

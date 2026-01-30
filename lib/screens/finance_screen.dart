@@ -1,8 +1,9 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:fl_chart/fl_chart.dart';
-import '../theme/app_theme.dart';
+
 import '../services/finance_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/transaction_form.dart';
 
 class FinanceScreen extends StatefulWidget {
@@ -25,12 +26,11 @@ class _FinanceScreenState extends State<FinanceScreen> {
           // App Bar - Consistent styling
           SliverAppBar(
             expandedHeight: 120,
-            floating: false,
             pinned: true,
             backgroundColor: AppTheme.warning,
             automaticallyImplyLeading: false,
             flexibleSpace: FlexibleSpaceBar(
-              background: Container(
+              background: DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [AppTheme.warning, AppTheme.warning.withValues(alpha: 0.85)],
@@ -277,7 +277,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
             ),
             child: Column(
               children: [
-                Icon(
+                const Icon(
                   Icons.pie_chart_outline_rounded,
                   size: 48,
                   color: AppTheme.neutral300,
@@ -410,7 +410,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                 ),
                 child: Column(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.receipt_long_rounded,
                       size: 48,
                       color: AppTheme.neutral300,
@@ -425,7 +425,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
               );
             }
 
-            return Container(
+            return DecoratedBox(
               decoration: BoxDecoration(
                 color: AppTheme.surface,
                 borderRadius: BorderRadius.circular(AppTheme.radiusLg),
@@ -435,7 +435,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: transactions.length,
-                separatorBuilder: (_, __) => Divider(
+                separatorBuilder: (_, __) => const Divider(
                   height: 1,
                   color: AppTheme.neutral100,
                 ),
@@ -445,7 +445,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                   final date = tx['date'] as DateTime;
 
                   return Dismissible(
-                    key: Key(tx['id']),
+                    key: Key((tx['id'] as String?) ?? ''),
                     direction: DismissDirection.endToStart,
                     background: Container(
                       alignment: Alignment.centerRight,
@@ -456,7 +456,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                       ),
                       child: const Icon(Icons.delete_rounded, color: Colors.white),
                     ),
-                    confirmDismiss: (_) => _confirmDelete(tx['id']),
+                    confirmDismiss: (_) => _confirmDelete((tx['id'] as String?) ?? ''),
                     child: ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: AppTheme.spacingMd,
@@ -479,15 +479,15 @@ class _FinanceScreenState extends State<FinanceScreen> {
                         ),
                       ),
                       title: Text(
-                        tx['category'] ?? '',
+                        (tx['category'] as String?) ?? '',
                         style: AppTheme.labelLg,
                       ),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (tx['description']?.isNotEmpty ?? false)
+                          if (((tx['description'] as String?) ?? '').isNotEmpty)
                             Text(
-                              tx['description'],
+                              (tx['description'] as String?) ?? '',
                               style: AppTheme.bodySm,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -499,7 +499,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                         ],
                       ),
                       trailing: Text(
-                        '${isIncome ? '+' : '-'} ${_formatCurrency(tx['amount']?.toDouble() ?? 0)}',
+                        '${isIncome ? '+' : '-'} ${_formatCurrency((tx['amount'] as num?)?.toDouble() ?? 0)}',
                         style: AppTheme.labelLg.copyWith(
                           color: isIncome ? AppTheme.success : AppTheme.error,
                         ),
@@ -535,7 +535,6 @@ class _FinanceScreenState extends State<FinanceScreen> {
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
               primary: AppTheme.warning,
-              onPrimary: Colors.white,
             ),
           ),
           child: child!,

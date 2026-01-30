@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  final VoidCallback? onPressed;
-  final String text;
-  final bool isLoading;
-  final Color? backgroundColor;
-  final double? width;
-  final double height;
 
   const CustomButton({
     super.key,
@@ -17,6 +11,12 @@ class CustomButton extends StatelessWidget {
     this.width,
     this.height = 56,
   });
+  final VoidCallback? onPressed;
+  final String text;
+  final bool isLoading;
+  final Color? backgroundColor;
+  final double? width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {

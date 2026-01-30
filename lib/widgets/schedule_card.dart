@@ -2,14 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ScheduleCard extends StatelessWidget {
-  final String taskName;
-  final String category;
-  final String assignedMemberName;
-  final DateTime date;
-  final String status;
-  final VoidCallback? onTap;
-  final VoidCallback? onComplete;
-  final VoidCallback? onDelete;
 
   const ScheduleCard({
     super.key,
@@ -22,6 +14,14 @@ class ScheduleCard extends StatelessWidget {
     this.onComplete,
     this.onDelete,
   });
+  final String taskName;
+  final String category;
+  final String assignedMemberName;
+  final DateTime date;
+  final String status;
+  final VoidCallback? onTap;
+  final VoidCallback? onComplete;
+  final VoidCallback? onDelete;
 
   IconData _getCategoryIcon() {
     switch (category) {

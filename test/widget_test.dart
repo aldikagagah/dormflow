@@ -1,30 +1,68 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+/// Basic smoke tests for DormFlow Mobile
+///
+/// These tests verify basic functionality without Firebase initialization.
+library;
 
+import 'package:dormflow_mobile/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:dormflow_mobile/main.dart';
-
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('DormFlow Mobile Smoke Tests', () {
+    testWidgets('AppTheme should provide valid light theme', (
+      WidgetTester tester,
+    ) async {
+      // Build a simple MaterialApp with light theme
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightTheme,
+          home: const Scaffold(
+            body: Text('Test'),
+          ),
+        ),
+      );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      // Verify MaterialApp is rendered
+      expect(find.byType(MaterialApp), findsOneWidget);
+      expect(find.text('Test'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      // Verify theme colors
+      final MaterialApp app = tester.widget(find.byType(MaterialApp));
+      expect(app.theme?.useMaterial3, isTrue);
+      expect(app.theme?.primaryColor, AppTheme.primary);
+    });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    testWidgets('AppTheme should provide valid dark theme', (
+      WidgetTester tester,
+    ) async {
+      // Build a simple MaterialApp with dark theme
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.darkTheme,
+          home: const Scaffold(
+            body: Text('Dark Mode'),
+          ),
+        ),
+      );
+
+      // Verify MaterialApp is rendered
+      expect(find.byType(MaterialApp), findsOneWidget);
+      expect(find.text('Dark Mode'), findsOneWidget);
+
+      // Verify dark theme brightness
+      final MaterialApp app = tester.widget(find.byType(MaterialApp));
+      expect(app.theme?.brightness, Brightness.dark);
+    });
+
+    test('AppTheme constants should be valid', () {
+      // Verify color constants
+      expect(AppTheme.primary, const Color(0xFF4F46E5));
+      expect(AppTheme.success, const Color(0xFF22C55E));
+      expect(AppTheme.error, const Color(0xFFEF4444));
+
+      // Verify spacing constants
+      expect(AppTheme.spacingMd, 16.0);
+      expect(AppTheme.radiusMd, 12.0);
+    });
   });
 }
