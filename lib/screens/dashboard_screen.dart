@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
-import 'login_screen.dart';
+import 'package:intl/intl.dart';
+import '../theme/app_theme.dart';
+import '../services/schedule_service.dart';
+import '../widgets/theme_toggle.dart';
+import 'attendance_screen.dart';
+import 'finance_screen.dart';
+import 'profile_screen.dart';
+import 'schedule_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -14,10 +20,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final PageController _pageController = PageController();
 
   final List<Widget> _pages = [
-    TodayPage(),
-    AttendancePage(),
-    FinancePage(),
-    ProfilePage(),
+    const TodayPage(),
+    const ScheduleScreen(),
+    const AttendanceScreen(),
+    const FinanceScreen(),
+    const ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -40,93 +47,81 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade50,
-      appBar: AppBar(
-        title: const Text(
-          'Dormflow Dashboard',
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
-          ),
-        ),
-        backgroundColor: Colors.indigo.shade50,
-        elevation: 1,
-        centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12.0),
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.indigo.shade400,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 2,
-              ),
-              onPressed: () async {
-                await AuthService().signOut();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const LoginScreen()),
-                );
-              },
-              icon: const Icon(Icons.logout, color: Colors.white),
-              label: const Text(
-                'Keluar',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-        ],
-      ),
+      backgroundColor: AppTheme.background,
       body: PageView(
         controller: _pageController,
         onPageChanged: (index) => setState(() => _selectedIndex = index),
+        physics: const NeverScrollableScrollPhysics(),
         children: _pages,
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.indigo.shade600, Colors.indigo.shade400],
+      bottomNavigationBar: _buildBottomNav(),
+    );
+  }
+
+  Widget _buildBottomNav() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, -5),
           ),
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.15),
-              blurRadius: 8,
-              offset: const Offset(0, -2),
-            ),
-          ],
+        ],
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _navItem(0, Icons.home_rounded, 'Beranda'),
+              _navItem(1, Icons.calendar_month_rounded, 'Jadwal'),
+              _navItem(2, Icons.fingerprint_rounded, 'Absensi'),
+              _navItem(3, Icons.account_balance_wallet_rounded, 'Kas'),
+              _navItem(4, Icons.person_rounded, 'Profil'),
+            ],
+          ),
         ),
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white70,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.today_outlined),
-              label: 'Hari Ini',
+      ),
+    );
+  }
+
+  Widget _navItem(int index, IconData icon, String label) {
+    final isSelected = _selectedIndex == index;
+
+    return GestureDetector(
+      onTap: () => _onItemTapped(index),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: EdgeInsets.symmetric(
+          horizontal: isSelected ? 16 : 12,
+          vertical: 10,
+        ),
+        decoration: BoxDecoration(
+          color: isSelected ? AppTheme.primary.withValues(alpha: 0.1) : Colors.transparent,
+          borderRadius: BorderRadius.circular(AppTheme.radiusFull),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: 24,
+              color: isSelected ? AppTheme.primary : AppTheme.neutral400,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.check_circle_outline),
-              label: 'Absensi',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance_wallet_outlined),
-              label: 'Kas',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              label: 'Profile',
-            ),
+            if (isSelected) ...[
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.primary,
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -134,92 +129,400 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 }
 
-// ------------------- Halaman Dummy Elegan -------------------
+// ==================== TODAY PAGE ====================
 
-class TodayPage extends StatelessWidget {
+class TodayPage extends StatefulWidget {
+  const TodayPage({super.key});
+
+  @override
+  State<TodayPage> createState() => _TodayPageState();
+}
+
+class _TodayPageState extends State<TodayPage> {
+  final ScheduleService _scheduleService = ScheduleService();
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Hari Ini',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.indigo,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            elevation: 4,
-            shadowColor: Colors.indigo.shade100,
-            child: ListTile(
-              leading: const Icon(
-                Icons.menu_book_outlined,
-                color: Colors.indigo,
+    final now = DateTime.now();
+    final greeting = _getGreeting(now.hour);
+
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: CustomScrollView(
+        slivers: [
+          // App Bar
+          SliverAppBar(
+            expandedHeight: 180,
+            floating: false,
+            pinned: true,
+            backgroundColor: AppTheme.primary,
+            automaticallyImplyLeading: false,
+            actions: [
+              // Theme Toggle Icon
+              const ThemeCycleButton(
+                iconColor: Colors.white,
+                size: 24,
+                showBackground: true,
               ),
-              title: const Text('Jadwal Ngaji'),
-              subtitle: const Text('Giliran: Aldika Gagah Prasetya'),
-              trailing: const Icon(Icons.arrow_forward_ios),
+              const SizedBox(width: 16),
+            ],
+            flexibleSpace: FlexibleSpaceBar(
+              background: Container(
+                decoration: const BoxDecoration(
+                  gradient: AppTheme.primaryGradient,
+                ),
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppTheme.spacingLg),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          greeting,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white.withValues(alpha: 0.8),
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        const Text(
+                          'Selamat Datang! 👋',
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(AppTheme.radiusFull),
+                          ),
+                          child: Text(
+                            DateFormat('EEEE, dd MMMM yyyy').format(now),
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.white.withValues(alpha: 0.95),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
-          const SizedBox(height: 12),
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            elevation: 4,
-            shadowColor: Colors.indigo.shade100,
-            child: ListTile(
-              leading: const Icon(Icons.mic_outlined, color: Colors.indigo),
-              title: const Text('Pemateri Malam Kamis'),
-              subtitle: const Text('3 Pemateri ditentukan malam Rabu'),
-              trailing: const Icon(Icons.arrow_forward_ios),
+
+          // Content
+          SliverPadding(
+            padding: const EdgeInsets.all(AppTheme.spacingLg),
+            sliver: SliverList(
+              delegate: SliverChildListDelegate([
+                // Quick Actions
+                _buildSectionTitle('Akses Cepat'),
+                const SizedBox(height: AppTheme.spacingMd),
+                _buildQuickActions(),
+                const SizedBox(height: AppTheme.spacingXl),
+
+                // Today's Schedule
+                _buildSectionTitle('Jadwal Hari Ini'),
+                const SizedBox(height: AppTheme.spacingMd),
+                _buildTodaySchedules(),
+                const SizedBox(height: AppTheme.spacingXl),
+
+                // Stats Overview
+                _buildSectionTitle('Ringkasan'),
+                const SizedBox(height: AppTheme.spacingMd),
+                _buildStatsCards(),
+              ]),
             ),
           ),
         ],
       ),
     );
   }
-}
 
-class AttendancePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Absensi',
-        style: TextStyle(fontSize: 24, color: Colors.indigo.shade700),
+  String _getGreeting(int hour) {
+    if (hour < 12) return '🌅 Selamat Pagi';
+    if (hour < 15) return '☀️ Selamat Siang';
+    if (hour < 18) return '🌤️ Selamat Sore';
+    return '🌙 Selamat Malam';
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: AppTheme.headingSm,
+    );
+  }
+
+  Widget _buildQuickActions() {
+    return Row(
+      children: [
+        Expanded(
+          child: _quickActionCard(
+            icon: Icons.calendar_month_rounded,
+            label: 'Jadwal',
+            color: AppTheme.primary,
+            onTap: () => _navigateToTab(1),
+          ),
+        ),
+        const SizedBox(width: AppTheme.spacingMd),
+        Expanded(
+          child: _quickActionCard(
+            icon: Icons.fingerprint_rounded,
+            label: 'Absensi',
+            color: AppTheme.secondary,
+            onTap: () => _navigateToTab(2),
+          ),
+        ),
+        const SizedBox(width: AppTheme.spacingMd),
+        Expanded(
+          child: _quickActionCard(
+            icon: Icons.account_balance_wallet_rounded,
+            label: 'Kas',
+            color: AppTheme.warning,
+            onTap: () => _navigateToTab(3),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _quickActionCard({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: AppTheme.spacingLg),
+        decoration: BoxDecoration(
+          color: AppTheme.surface,
+          borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+          boxShadow: AppTheme.shadowSm,
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+              ),
+              child: Icon(icon, color: color, size: 28),
+            ),
+            const SizedBox(height: AppTheme.spacingSm),
+            Text(
+              label,
+              style: AppTheme.labelMd.copyWith(color: AppTheme.neutral700),
+            ),
+          ],
+        ),
       ),
     );
   }
-}
 
-class FinancePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Kas Belanja Asrama',
-        style: TextStyle(fontSize: 24, color: Colors.indigo.shade700),
+  void _navigateToTab(int index) {
+    final dashboardState = context.findAncestorStateOfType<_DashboardScreenState>();
+    dashboardState?._onItemTapped(index);
+  }
+
+  Widget _buildTodaySchedules() {
+    return StreamBuilder<List<Map<String, dynamic>>>(
+      stream: _scheduleService.getTodaySchedulesStream(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Container(
+            padding: const EdgeInsets.all(AppTheme.spacingXl),
+            decoration: BoxDecoration(
+              color: AppTheme.surface,
+              borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+              boxShadow: AppTheme.shadowSm,
+            ),
+            child: const Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        final schedules = snapshot.data ?? [];
+
+        if (schedules.isEmpty) {
+          return Container(
+            padding: const EdgeInsets.all(AppTheme.spacingXl),
+            decoration: BoxDecoration(
+              color: AppTheme.surface,
+              borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+              boxShadow: AppTheme.shadowSm,
+            ),
+            child: Column(
+              children: [
+                Icon(
+                  Icons.event_available_rounded,
+                  size: 48,
+                  color: AppTheme.neutral300,
+                ),
+                const SizedBox(height: AppTheme.spacingMd),
+                Text(
+                  'Tidak ada jadwal hari ini',
+                  style: AppTheme.bodyMd.copyWith(color: AppTheme.neutral500),
+                ),
+                const SizedBox(height: AppTheme.spacingXs),
+                Text(
+                  'Nikmati hari santai! 🎉',
+                  style: AppTheme.bodySm,
+                ),
+              ],
+            ),
+          );
+        }
+
+        return Container(
+          decoration: BoxDecoration(
+            color: AppTheme.surface,
+            borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+            boxShadow: AppTheme.shadowSm,
+          ),
+          child: ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: schedules.length > 3 ? 3 : schedules.length,
+            separatorBuilder: (_, __) => Divider(
+              height: 1,
+              color: AppTheme.neutral100,
+            ),
+            itemBuilder: (context, index) {
+              final schedule = schedules[index];
+              return _scheduleItem(schedule);
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _scheduleItem(Map<String, dynamic> schedule) {
+    final category = schedule['category'] ?? '';
+    Color color;
+    IconData icon;
+
+    switch (category) {
+      case 'Piket':
+        color = AppTheme.secondary;
+        icon = Icons.cleaning_services_rounded;
+        break;
+      case 'Ngaji':
+        color = AppTheme.primary;
+        icon = Icons.menu_book_rounded;
+        break;
+      case 'Pemateri':
+        color = Colors.purple;
+        icon = Icons.mic_rounded;
+        break;
+      default:
+        color = AppTheme.neutral500;
+        icon = Icons.event_note_rounded;
+    }
+
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppTheme.spacingMd,
+        vertical: AppTheme.spacingSm,
+      ),
+      leading: Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(AppTheme.radiusMd),
+        ),
+        child: Icon(icon, color: color, size: 22),
+      ),
+      title: Text(
+        schedule['taskName'] ?? '',
+        style: AppTheme.labelLg,
+      ),
+      subtitle: Text(
+        schedule['assignedMemberName'] ?? '',
+        style: AppTheme.bodySm,
+      ),
+      trailing: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        decoration: BoxDecoration(
+          color: schedule['status'] == 'Selesai'
+              ? AppTheme.success.withValues(alpha: 0.1)
+              : AppTheme.warning.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(AppTheme.radiusFull),
+        ),
+        child: Text(
+          schedule['status'] ?? 'Pending',
+          style: AppTheme.labelSm.copyWith(
+            color: schedule['status'] == 'Selesai'
+                ? AppTheme.success
+                : AppTheme.warning,
+          ),
+        ),
       ),
     );
   }
-}
 
-class ProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Profile',
-        style: TextStyle(fontSize: 24, color: Colors.indigo.shade700),
+  Widget _buildStatsCards() {
+    return Row(
+      children: [
+        Expanded(
+          child: _statCard(
+            icon: Icons.check_circle_rounded,
+            label: 'Absensi',
+            value: 'Aktif',
+            color: AppTheme.success,
+          ),
+        ),
+        const SizedBox(width: AppTheme.spacingMd),
+        Expanded(
+          child: _statCard(
+            icon: Icons.event_note_rounded,
+            label: 'Jadwal Minggu Ini',
+            value: '5 Tugas',
+            color: AppTheme.primary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _statCard({
+    required IconData icon,
+    required String label,
+    required String value,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(AppTheme.spacingMd),
+      decoration: BoxDecoration(
+        color: AppTheme.surface,
+        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+        boxShadow: AppTheme.shadowSm,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: color, size: 24),
+          const SizedBox(height: AppTheme.spacingMd),
+          Text(label, style: AppTheme.bodySm),
+          const SizedBox(height: AppTheme.spacingXs),
+          Text(
+            value,
+            style: AppTheme.headingSm.copyWith(color: color),
+          ),
+        ],
       ),
     );
   }

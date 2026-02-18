@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DormFlow Mobile - UI/UX Showcase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-light: #818CF8;
+            --primary-dark: #3730A3;
+            --secondary: #14B8A6;
+            --success: #22C55E;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            --info: #3B82F6;
+            --neutral-50: #F8FAFC;
+            --neutral-100: #F1F5F9;
+            --neutral-200: #E2E8F0;
+            --neutral-400: #94A3B8;
+            --neutral-600: #475569;
+            --neutral-800: #1E293B;
+            --neutral-900: #0F172A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+
+        /* Device Frame */
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            justify-items: center;
+        }
+
+        .device-container {
+            text-align: center;
+        }
+
+        .device-label {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .device-frame {
+            width: 280px;
+            height: 580px;
+            background: #1a1a1a;
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4), inset 0 0 0 2px #333;
+            position: relative;
+        }
+
+        .device-frame::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 25px;
+            background: #000;
+            border-radius: 20px;
+        }
+
+        .device-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--neutral-50);
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen-content {
+            padding: 50px 16px 16px;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Animation Showcase Screens */
+
+        /* Screen 1: Loading States */
+        .loading-screen {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .skeleton {
+            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 12px;
+        }
+
+        .skeleton-card {
+            height: 100px;
+            width: 100%;
+        }
+
+        .skeleton-line {
+            height: 16px;
+            width: 80%;
+        }
+
+        .skeleton-line.short {
+            width: 50%;
+        }
+
+        .skeleton-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Bouncing Dots */
+        .bouncing-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .dot:nth-child(1) { animation-delay: 0s; }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-15px); }
+        }
+
+        /* Screen 2: Buttons & Cards */
+        .button-screen {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .scale-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        .scale-btn:active {
+            transform: scale(0.95);
+        }
+
+        .interactive-card {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .interactive-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+
+        .card-title {
+            font-weight: 600;
+            color: var(--neutral-800);
+            margin-bottom: 8px;
+        }
+
+        .card-text {
+            color: var(--neutral-600);
+            font-size: 14px;
+        }
+
+        /* Screen 3: Success Animation */
+        .success-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            gap: 20px;
+        }
+
+        .success-circle {
+            width: 100px;
+            height: 100px;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease;
+        }
+
+        .checkmark {
+            width: 50px;
+            height: 50px;
+            stroke: var(--success);
+            stroke-width: 3;
+            fill: none;
+            animation: drawCheck 0.6s ease 0.3s forwards;
+            stroke-dasharray: 80;
+            stroke-dashoffset: 80;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes drawCheck {
+            100% { stroke-dashoffset: 0; }
+        }
+
+        .success-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--neutral-800);
+            animation: fadeUp 0.5s ease 0.5s both;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Screen 4: Stats Card */
+        .stats-screen {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 24px;
+            border-radius: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .stats-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .stats-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .counter {
+            animation: countUp 1s ease-out;
+        }
+
+        .stats-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+
+        /* Snackbar */
+        .snackbar {
+            position: absolute;
+            bottom: 20px;
+            left: 16px;
+            right: 16px;
+            background: var(--success);
+            color: white;
+            padding: 14px 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Pulse Animation */
+        .pulse-badge {
+            background: var(--error);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        /* Color Palette Display */
+        .color-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neutral-800);
+            margin-bottom: 20px;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 16px;
+        }
+
+        .color-swatch {
+            text-align: center;
+        }
+
+        .swatch {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            margin: 0 auto 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .swatch-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--neutral-700);
+        }
+
+        .swatch-hex {
+            font-size: 11px;
+            color: var(--neutral-500);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-top: 40px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 DormFlow Mobile</h1>
+        <p class="subtitle">UI/UX Design System & Animation Showcase</p>
+
+        <div class="showcase-grid">
+            <!-- Device 1: Loading States -->
+            <div class="device-container">
+                <div class="device-label">⏳ Loading States</div>
+                <div class="device-frame">
+                    <div class="device-screen">
+                        <div class="screen-content loading-screen">
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <div class="skeleton skeleton-circle"></div>
+                                <div style="flex: 1;">
+                                    <div class="skeleton skeleton-line" style="margin-bottom: 8px;"></div>
+                                    <div class="skeleton skeleton-line short"></div>
+                                </div>
+                            </div>
+                            <div class="skeleton skeleton-card"></div>
+                            <div class="skeleton skeleton-card" style="height: 60px;"></div>
+                            <div class="skeleton skeleton-line"></div>
+                            <div class="skeleton skeleton-line short"></div>
+                            <div class="bouncing-dots">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Device 2: Interactive Elements -->
+            <div class="device-container">
+                <div class="device-label">👆 Interactive Elements</div>
+                <div class="device-frame">
+                    <div class="device-screen">
+                        <div class="screen-content button-screen">
+                            <button class="scale-btn">✨ Scale Button</button>
+                            <button class="scale-btn" style="background: linear-gradient(135deg, var(--secondary), var(--secondary));">🚀 Secondary Action</button>
+                            <div class="interactive-card">
+                                <div class="card-title">Interactive Card</div>
+                                <div class="card-text">Hover untuk efek elevasi</div>
+                            </div>
+                            <div class="interactive-card" style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div class="card-title">Notifications</div>
+                                    <div class="card-text">3 pesan baru</div>
+                                </div>
+                                <div class="pulse-badge">3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Device 3: Success Animation -->
+            <div class="device-container">
+                <div class="device-label">✅ Success Feedback</div>
+                <div class="device-frame">
+                    <div class="device-screen">
+                        <div class="screen-content success-screen">
+                            <div class="success-circle">
+                                <svg class="checkmark" viewBox="0 0 50 50">
+                                    <path d="M14 27l7 7 15-15"/>
+                                </svg>
+                            </div>
+                            <div class="success-text">Berhasil!</div>
+                            <div style="color: var(--neutral-600); text-align: center; animation: fadeUp 0.5s ease 0.7s both;">Data berhasil disimpan ke database</div>
+                        </div>
+                        <div class="snackbar">
+                            <span>✓</span>
+                            <span>Transaksi berhasil dicatat!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Device 4: Stats & Data -->
+            <div class="device-container">
+                <div class="device-label">📊 Stats & Counters</div>
+                <div class="device-frame">
+                    <div class="device-screen">
+                        <div class="screen-content stats-screen">
+                            <div class="stats-card">
+                                <div class="stats-label">Total Pendapatan</div>
+                                <div class="stats-value counter">Rp 5.250.000</div>
+                                <div class="stats-trend">
+                                    <span>↑</span>
+                                    <span>+12.5% bulan ini</span>
+                                </div>
+                            </div>
+                            <div class="stats-card" style="background: linear-gradient(135deg, var(--secondary), #0d9488);">
+                                <div class="stats-label">Kehadiran</div>
+                                <div class="stats-value">95%</div>
+                                <div class="stats-trend">
+                                    <span>✓</span>
+                                    <span>28/30 hari</span>
+                                </div>
+                            </div>
+                            <div class="interactive-card">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>
+                                        <div class="card-title">Jadwal Hari Ini</div>
+                                        <div class="card-text">Piket Dapur</div>
+                                    </div>
+                                    <div style="color: var(--warning); font-weight: 600;">08:00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Color Palette -->
+        <div class="color-section">
+            <div class="section-title">🎨 Color Palette</div>
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="swatch" style="background: var(--primary);"></div>
+                    <div class="swatch-name">Primary</div>
+                    <div class="swatch-hex">#4F46E5</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: var(--primary-light);"></div>
+                    <div class="swatch-name">Primary Light</div>
+                    <div class="swatch-hex">#818CF8</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: var(--secondary);"></div>
+                    <div class="swatch-name">Secondary</div>
+                    <div class="swatch-hex">#14B8A6</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: var(--success);"></div>
+                    <div class="swatch-name">Success</div>
+                    <div class="swatch-hex">#22C55E</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: var(--warning);"></div>
+                    <div class="swatch-name">Warning</div>
+                    <div class="swatch-hex">#F59E0B</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: var(--error);"></div>
+                    <div class="swatch-name">Error</div>
+                    <div class="swatch-hex">#EF4444</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: var(--info);"></div>
+                    <div class="swatch-name">Info</div>
+                    <div class="swatch-hex">#3B82F6</div>
+                </div>
+                <div class="color-swatch">
+                    <div class="swatch" style="background: var(--neutral-800);"></div>
+                    <div class="swatch-name">Neutral 800</div>
+                    <div class="swatch-hex">#1E293B</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            DormFlow Mobile Design System • January 2026
+        </div>
+    </div>
+</body>
+</html>
